@@ -1,6 +1,5 @@
 #include <iostream>
 #include "../include/cluster.h"
-#include <pcl/io/pcd_io.h>
 
 using namespace cloud_io;
 

@@ -3,12 +3,69 @@
 #include <vector>
 #include <assert.h>
 #include <pcl/io/pcd_io.h>
+#include "../include/math.h"
 
 int const DIM_VECT(3);
 int const GROUND_LABEL(2), NON_GROUND_LABEL(27);
 int const NUM_DESIRED_POINTS(100);
 
 //////////////////////////////////////////////////////////////////////////////////////////////
+
+std::string norm_to_string(Norm& norm)
+{
+    switch(norm)
+    {
+        case norm1:
+            return "norm1";
+            break;
+        case norm2:
+            return "norm2";
+            break;
+        case norm2z:
+            return "norm2z";
+            break;
+        default:
+            return "undefinednorm";
+            break;
+    }
+}
+
+////////////////////////////////////////////////////////////////////
+
+float calculateDistance(Norm norm, std::vector<float>& point1, std::vector<float>& point2)
+{
+    assert(point1.size() == DIM_VECT && point2.size() == DIM_VECT && "Incorrect vector size.");
+    
+    float distance(0);
+    
+    switch(norm)
+    {
+        case norm1:
+        {
+            distance = abs(point1[0]-point2[0])+abs(point1[1]-point2[1])+abs(point1[2]-point2[2]);
+            break;
+        }
+        case norm2:
+        {
+            distance = sqrt(pow(point1[0]-point2[0],2)+pow(point1[1]-point2[1],2)+pow(point1[2]-point2[2],2));
+            break;
+        }
+        case norm2z:
+        {
+            distance = sqrt(pow(point1[0]-point2[0],2)+pow(point1[1]-point2[1],2)+pow(point1[2]-point2[2],2));
+            break;
+        }
+        default:
+            std::cout << "Non-specified norm. Euclidean norm chosen by default" << std::endl;
+            distance = sqrt(pow(point1[0]-point2[0],2)+pow(point1[1]-point2[1],2)+pow(point1[2]-point2[2],2));
+            break;
+    }
+    
+    assert(distance >=0 && "Non positive distance");
+    return distance;
+}
+
+////////////////////////////////////////////////////////////////////
 
 float calculateDistance(const std::vector<float>& coordinatesPoint1, const std::vector<float>& coordinatesPoint2)
 {

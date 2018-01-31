@@ -1,8 +1,7 @@
 #ifndef CLUSTER_H
 #define CLUSTER_H
 
-#include "/home/wyllich/projet3A/cloud_io/include/cloud_io.h"
-#include "/home/wyllich/projet3A/feature/include/feature.h"
+#include "../../feature/include/feature.h"
 #include <map>
 
 namespace cluster{
@@ -15,7 +14,7 @@ namespace cluster{
         
         public :
             /*
-                Contructors, Getters, setters
+                Constructors, Getters, setters
              */
             Cluster_XYZ();
             void set_cloud(pcl::PointCloud<pcl::PointXYZ>::Ptr pCloud);

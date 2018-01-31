@@ -1,6 +1,5 @@
 #include <iostream>
 #include "../include/cluster.h"
-#include <pcl/io/pcd_io.h>
 #include <math.h>
 
 #define PI 3.14159265

@@ -1,5 +1,5 @@
 #include "../include/cloud_io.h"
-#include <pcl/io/pcd_io.h>
+#include <iostream>
 
 namespace cloud_io
 {

@@ -1,7 +1,7 @@
 #ifndef FEATURE_H
 #define FEATURE_H
 
-#include "/home/wyllich/projet3A/cloud_io/include/cloud_io.h"
+#include "../../cloud_io/include/cloud_io.h"
 
 namespace feature
 {
