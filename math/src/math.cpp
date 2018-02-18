@@ -4,10 +4,7 @@
 #include <assert.h>
 #include <pcl/io/pcd_io.h>
 #include "../include/math.h"
-
-int const DIM_VECT(3);
-int const GROUND_LABEL(2), NON_GROUND_LABEL(27);
-int const NUM_DESIRED_POINTS(100);
+#include "../../constant/include/constant.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
