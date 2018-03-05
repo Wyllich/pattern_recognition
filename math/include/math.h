@@ -1,6 +1,9 @@
 #ifndef MATH_H
 #define MATH_H
 
+#include "../../cluster/include/cluster.h"
+using namespace cluster;
+
 enum Norm {norm1, norm2, norm2z};
 
 std::string norm_to_string(Norm& norm);
@@ -16,5 +19,7 @@ std::vector<float> calculateMaxCoords(pcl::PointCloud<pcl::PointXYZL>::Ptr cloud
 std::vector<float> calculateMinCoords(pcl::PointCloud<pcl::PointXYZL>::Ptr cloud);
 
 float calculateApproxDensity(int cloudsize, const std::vector<float>& maxCoords, const std::vector<float>& minCoords);
+
+float calc_clust_to_clust(Cluster_XYZ c1, Cluster_XYZ c2);
 
 #endif

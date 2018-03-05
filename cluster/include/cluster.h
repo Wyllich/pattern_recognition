@@ -76,7 +76,7 @@ namespace cluster{
             feature::Feature_Normal get_feature(std::string pName);
             
             void print_features();
+            
     };
-
 }
 #endif

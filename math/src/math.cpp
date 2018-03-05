@@ -1,10 +1,10 @@
-#include "../math.h"
 #include <string>
 #include <vector>
 #include <assert.h>
 #include <pcl/io/pcd_io.h>
 #include "../include/math.h"
 #include "../../constant/include/constant.h"
+#include <pcl/kdtree/kdtree_flann.h> //kdtree
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -151,4 +151,61 @@ float calculateApproxDensity(int cloudsize, const std::vector<float>& maxCoords,
     assert(approxDensity >=0 && "The calculated approximate density is a positive real number.");
     
     return approxDensity;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+float calc_clust_to_clust(Cluster_XYZ c1, Cluster_XYZ c2)
+{
+    float dist{0};
+    float max_rad{10000};
+    
+    pcl::PointCloud<pcl::PointXYZ>::Ptr c_1 = c1.get_cloud();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr c_2 = c2.get_cloud();
+    
+    pcl::KdTreeFLANN<pcl::PointXYZ> kdtree1;
+    kdtree1.setInputCloud(c_1);
+    pcl::KdTreeFLANN<pcl::PointXYZ> kdtree2;
+    kdtree2.setInputCloud(c_2);
+    
+    // Calculating the distance from c_1 to c_2 : the model is c_2
+    float dist_ref2{0};
+    for(size_t i=0; i < c_1->points.size(); ++i)
+    {
+        std::vector<float> current_point = {c_1->points[i].x,
+                                            c_1->points[i].y,
+                                            c_1->points[i].z};
+        std::vector<int> indexRadiusSearch;
+        std::vector<float> distancesRadiusSearch;
+        
+        if(kdtree2.radiusSearch(c_1->points[i], max_rad, indexRadiusSearch, distancesRadiusSearch))
+        {
+            std::vector<float> closest_point = {c_2->points[ indexRadiusSearch[0] ].x,
+                                                c_2->points[ indexRadiusSearch[0] ].y,
+                                                c_2->points[ indexRadiusSearch[0] ].z};
+            dist_ref2 += calculateDistance(current_point, closest_point);
+        }
+    }
+    
+    float dist_ref1{0};
+    for(size_t i=0; i < c_2->points.size(); ++i)
+    {
+        std::vector<float> current_point = {c_2->points[i].x,
+                                            c_2->points[i].y,
+                                            c_2->points[i].z};
+        std::vector<int> indexRadiusSearch;
+        std::vector<float> distancesRadiusSearch;
+        
+        if(kdtree1.radiusSearch(c_2->points[i], max_rad, indexRadiusSearch, distancesRadiusSearch))
+        {
+            std::vector<float> closest_point = {c_1->points[ indexRadiusSearch[0] ].x,
+                                                c_1->points[ indexRadiusSearch[0] ].y,
+                                                c_1->points[ indexRadiusSearch[0] ].z};
+            dist_ref1 += calculateDistance(current_point, closest_point);
+        }
+    }
+        
+    dist = dist_ref2/( c_1->points.size()) + dist_ref1/( c_2->points.size() );
+    
+    return dist;
 }

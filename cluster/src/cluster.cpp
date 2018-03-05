@@ -151,7 +151,6 @@ namespace cluster{
         return feat;
     }
         
-
      /*
         Contructors, Modifiers, Readers
      */
